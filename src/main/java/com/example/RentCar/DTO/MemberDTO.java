@@ -9,7 +9,7 @@ public class MemberDTO {
     private float drivingLicenseNumber;
 
     public MemberDTO() {
-        super();
+        
     }
 
     public MemberDTO(String name, String phoneNumber, String email, String address, float drivingLicenseNumber) {

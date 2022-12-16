@@ -2,7 +2,7 @@ package com.example.RentCar.DTO;
 
 public class CarDTO {
 
-    private float id;
+    private Long id;
     private float barcode;
     private float licensePlateNumber;
     private int passengerCapacity;
@@ -16,7 +16,7 @@ public class CarDTO {
     public CarDTO() {
     }
 
-    public CarDTO(float id, float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status) {
+    public CarDTO(Long id, float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status) {
         this.id = id;
         this.barcode = barcode;
         this.licensePlateNumber = licensePlateNumber;
@@ -29,11 +29,11 @@ public class CarDTO {
         this.status = status;
     }
 
-    public float getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(float id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

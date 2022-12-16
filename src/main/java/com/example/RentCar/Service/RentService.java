@@ -1,9 +1,9 @@
 package com.example.RentCar.Service;
 
 import com.example.RentCar.DTO.CarDTO;
-import com.example.RentCar.Mapper.CarMapper;
+import com.example.RentCar.Mapper.*;
 import com.example.RentCar.Model.Car;
-import com.example.RentCar.Repository.CarRepository;
+import com.example.RentCar.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CarService {
+public class RentService {
 
     @Autowired
     private CarRepository carRepository;
 
     @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
     private CarMapper carMapper;
+
+    @Autowired
+    private ReservationMapper reservationMapper;
+
+    @Autowired
+    private LocationMapper locationMapper;
+
+    @Autowired
+    private MemberMapper memberMapper;
+
+    @Autowired
+    private ServiceMapper serviceMapper;
+
+    @Autowired
+    private EquipmentMapper equipmentMapper;
 
     public CarDTO save(CarDTO dto) {
         Car car = carMapper.carDTOToEntity(dto);

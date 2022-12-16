@@ -10,22 +10,22 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String code;
+    private int code;
     private String address;
 
     public Location() {
     }
 
-    public Location(String code, String address) {
+    public Location(int code, String address) {
         this.code = code;
         this.address = address;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
