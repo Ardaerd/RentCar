@@ -16,16 +16,16 @@ public interface CarMapper {
     CarDTO carEntityToDTO(Car car);
 
     @InheritInverseConfiguration
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "barcode", ignore = true)
-    @Mapping(target = "licensePlateNumber", ignore = true)
-    @Mapping(target = "passengerCapacity", ignore = true)
-    @Mapping(target = "brand", ignore = true)
-    @Mapping(target = "model", ignore = true)
-    @Mapping(target = "transmissionType", ignore = true)
-    @Mapping(target = "dailyPrice", ignore = true)
-    @Mapping(target = "carTypes", ignore = true)
-    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "id")
+    @Mapping(target = "barcode")
+    @Mapping(target = "licensePlateNumber")
+    @Mapping(target = "passengerCapacity")
+    @Mapping(target = "brand")
+    @Mapping(target = "model")
+    @Mapping(target = "transmissionType")
+    @Mapping(target = "dailyPrice")
+    @Mapping(target = "carType")
+    @Mapping(target = "status")
     Car carDTOToEntity(CarDTO dto);
 
 }

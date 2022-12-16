@@ -2,6 +2,7 @@ package com.example.RentCar.DTO;
 
 public class CarDTO {
 
+    private float id;
     private float barcode;
     private float licensePlateNumber;
     private int passengerCapacity;
@@ -9,13 +10,14 @@ public class CarDTO {
     private String model;
     private String transmissionType;
     private double dailyPrice;
-    private String carTypes;
+    private String carType;
     private String status;
 
     public CarDTO() {
     }
 
-    public CarDTO(float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carTypes, String status) {
+    public CarDTO(float id, float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status) {
+        this.id = id;
         this.barcode = barcode;
         this.licensePlateNumber = licensePlateNumber;
         this.passengerCapacity = passengerCapacity;
@@ -23,10 +25,17 @@ public class CarDTO {
         this.model = model;
         this.transmissionType = transmissionType;
         this.dailyPrice = dailyPrice;
-        this.carTypes = carTypes;
+        this.carType = carType;
         this.status = status;
     }
 
+    public float getId() {
+        return id;
+    }
+
+    public void setId(float id) {
+        this.id = id;
+    }
 
     public float getBarcode() {
         return barcode;
@@ -84,12 +93,12 @@ public class CarDTO {
         this.dailyPrice = dailyPrice;
     }
 
-    public String getCarTypes() {
-        return carTypes;
+    public String getCarType() {
+        return carType;
     }
 
-    public void setCarTypes(String carTypes) {
-        this.carTypes = carTypes;
+    public void setCarType(String carType) {
+        this.carType = carType;
     }
 
     public String getStatus() {

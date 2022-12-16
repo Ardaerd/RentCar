@@ -21,14 +21,14 @@ public class CarService {
 
     public CarDTO save(CarDTO dto) {
         Car car = carMapper.carDTOToEntity(dto);
-        System.out.println(car.getCarTypes());
+        System.out.println(car.getCarType());
         carRepository.save(car);
 
         return carMapper.carEntityToDTO(car);
     }
 
-    public List<CarDTO> findAvailableCars() {
-        List<Car> listOfCars = carRepository.findByStatus("available");
+    public List<CarDTO> findAvailableCars(String carType, String transmissionType) {
+        List<Car> listOfCars = carRepository.findDesiredCars("available",carType,transmissionType);
         List<CarDTO> dtoList = new ArrayList<>();
 
         for (Car car : listOfCars)

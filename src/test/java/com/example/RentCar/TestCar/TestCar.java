@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
+import java.util.List;
+
 
 @SpringBootTest
 public class TestCar {
@@ -27,6 +29,11 @@ public class TestCar {
 
         carService.save(carDTO1);
         carService.save(carDTO2);
+
+        List<CarDTO> listofAvailableCars = carService.findAvailableCars("Sport","Auto");
+
+        for (CarDTO carDTO : listofAvailableCars)
+            System.out.println(carDTO.getBrand());
 
     }
 

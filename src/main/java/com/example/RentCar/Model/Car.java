@@ -10,20 +10,29 @@ public class Car {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "barcode")
     private float barcode;
+    @Column(name = "licensePlateNumber")
     private float licensePlateNumber;
+    @Column(name = "passengerCapacity")
     private int passengerCapacity;
+    @Column(name = "brand")
     private String brand;
+    @Column(name = "model")
     private String model;
+    @Column(name = "transmissionType")
     private String transmissionType;
+    @Column(name = "dailyPrice")
     private double dailyPrice;
-    private String carTypes;
+    @Column(name = "carType")
+    private String carType;
+    @Column(name = "status")
     private String status;
 
     public Car() {
     }
 
-    public Car(float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carTypes, String status) {
+    public Car(float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status) {
         this.barcode = barcode;
         this.licensePlateNumber = licensePlateNumber;
         this.passengerCapacity = passengerCapacity;
@@ -31,7 +40,7 @@ public class Car {
         this.model = model;
         this.transmissionType = transmissionType;
         this.dailyPrice = dailyPrice;
-        this.carTypes = carTypes;
+        this.carType = carType;
         this.status = status;
     }
 
@@ -91,12 +100,12 @@ public class Car {
         this.dailyPrice = dailyPrice;
     }
 
-    public String getCarTypes() {
-        return carTypes;
+    public String getCarType() {
+        return carType;
     }
 
-    public void setCarTypes(String carTypes) {
-        this.carTypes = carTypes;
+    public void setCarType(String carType) {
+        this.carType = carType;
     }
 
     public String getStatus() {
