@@ -11,7 +11,7 @@ public class Car {
     private Long id;
 
     @Column(name = "barcode")
-    private float barcode;
+    private String barcode;
     @Column(name = "licensePlateNumber")
     private float licensePlateNumber;
     @Column(name = "passengerCapacity")
@@ -29,10 +29,13 @@ public class Car {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "mileage")
+    private Long mileage;
+
     public Car() {
     }
 
-    public Car(float barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status) {
+    public Car(String barcode, float licensePlateNumber, int passengerCapacity, String brand, String model, String transmissionType, double dailyPrice, String carType, String status, Long mileage) {
         this.barcode = barcode;
         this.licensePlateNumber = licensePlateNumber;
         this.passengerCapacity = passengerCapacity;
@@ -42,13 +45,22 @@ public class Car {
         this.dailyPrice = dailyPrice;
         this.carType = carType;
         this.status = status;
+        this.mileage = mileage;
     }
 
-    public float getBarcode() {
+    public Long getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(Long mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(float barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

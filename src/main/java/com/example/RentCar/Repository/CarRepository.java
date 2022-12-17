@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car,Float> {
 
+    @Query(value = "SELECT * FROM CAR C WHERE C.BARCODE  = :barcode",nativeQuery = true)
+    Car findCarByBarcode(@Param("barcode") String barcode);
+
     @Query(value = "SELECT * FROM CAR C WHERE C.STATUS  = :status AND C.CAR_TYPE = :carType AND C.TRANSMISSION_TYPE = :transmissionType",nativeQuery = true)
     List<Car> findDesiredCars(@Param("status") String status, @Param("carType") String carType, @Param("transmissionType") String transmissionType);
 

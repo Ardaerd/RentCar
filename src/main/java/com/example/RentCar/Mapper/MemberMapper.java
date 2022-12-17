@@ -15,7 +15,7 @@ public interface MemberMapper {
     MemberDTO memberEntityToDTO(Member member);
 
     @InheritInverseConfiguration
-    @Mapping(target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "name")
     @Mapping(target = "phoneNumber")
     @Mapping(target = "email")

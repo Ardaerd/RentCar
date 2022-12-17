@@ -26,6 +26,7 @@ public interface CarMapper {
     @Mapping(target = "dailyPrice")
     @Mapping(target = "carType")
     @Mapping(target = "status")
+    @Mapping(target = "mileage")
     Car carDTOToEntity(CarDTO dto);
 
 }

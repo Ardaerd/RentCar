@@ -12,7 +12,7 @@ public interface ServiceMapper {
 
     ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
 
-    ServiceMapper serviceEntityToDTO(Service service);
+    ServiceDTO serviceEntityToDTO(Service service);
 
     @InheritInverseConfiguration
     @Mapping(target = "id")

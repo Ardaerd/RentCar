@@ -15,13 +15,9 @@ public interface ReservationMapper {
     ReservationDTO reservationEntityToDTO(Reservation reservation);
 
     @InheritInverseConfiguration
-    @Mapping(target = "id")
     @Mapping(target = "reservationNumber")
-    @Mapping(target = "creationDate")
     @Mapping(target = "pickUpDate")
     @Mapping(target = "dropOffDate")
     @Mapping(target = "dropOffLocation")
-    @Mapping(target = "returnDate")
-    @Mapping(target = "statu")
     Reservation reservationDTOToEntity(ReservationDTO dto);
 }

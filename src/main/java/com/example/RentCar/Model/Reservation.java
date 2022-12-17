@@ -1,6 +1,7 @@
 package com.example.RentCar.Model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 
@@ -12,7 +13,9 @@ public class Reservation {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private float reservationNumber;
+    private String reservationNumber;
+    @CreatedDate
+    @Temporal(TemporalType.DATE)
     private Date creationDate;
     private Date pickUpDate;
     private Date dropOffDate;
@@ -22,7 +25,7 @@ public class Reservation {
     private Location dropOffLocation;
 
     private Date returnDate;
-    private String statu;
+    private String status;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -30,22 +33,21 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(float reservationNumber, Date creationDate, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Date returnDate, String statu, Member member) {
+    public Reservation(String reservationNumber, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Date returnDate, String status, Member member) {
         this.reservationNumber = reservationNumber;
-        this.creationDate = creationDate;
         this.pickUpDate = pickUpDate;
         this.dropOffDate = dropOffDate;
         this.dropOffLocation = dropOffLocation;
         this.returnDate = returnDate;
-        this.statu = statu;
+        this.status = status;
         this.member = member;
     }
 
-    public float getReservationNumber() {
+    public String getReservationNumber() {
         return reservationNumber;
     }
 
-    public void setReservationNumber(float reservationNumber) {
+    public void setReservationNumber(String reservationNumber) {
         this.reservationNumber = reservationNumber;
     }
 
@@ -82,11 +84,11 @@ public class Reservation {
     }
 
     public String getStatu() {
-        return statu;
+        return status;
     }
 
-    public void setStatu(String statu) {
-        this.statu = statu;
+    public void setStatu(String status) {
+        this.status = status;
     }
 
     public Location getDropOffLocation() {
