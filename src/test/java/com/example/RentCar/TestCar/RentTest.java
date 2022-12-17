@@ -1,17 +1,8 @@
 package com.example.RentCar.TestCar;
 
-import com.example.RentCar.DTO.CarDTO;
-import com.example.RentCar.DTO.EquipmentDTO;
-import com.example.RentCar.DTO.LocationDTO;
-import com.example.RentCar.DTO.MemberDTO;
-import com.example.RentCar.Mapper.CarMapper;
-import com.example.RentCar.Mapper.EquipmentMapper;
-import com.example.RentCar.Mapper.LocationMapper;
-import com.example.RentCar.Mapper.MemberMapper;
-import com.example.RentCar.Model.Car;
-import com.example.RentCar.Model.Equipment;
-import com.example.RentCar.Model.Location;
-import com.example.RentCar.Model.Member;
+import com.example.RentCar.DTO.*;
+import com.example.RentCar.Mapper.*;
+import com.example.RentCar.Model.*;
 import com.example.RentCar.Service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +29,9 @@ public class RentTest {
 
     @Autowired
     EquipmentService equipmentService;
+
+    @Autowired
+    ServiceService serviceService;
 
     @Test
     @Commit
@@ -126,6 +120,24 @@ public class RentTest {
 
     }
 
+    @Test
+    @Commit
+    public void saveService() {
+        saveEquipment();
+
+        Service service1 = new Service(40,"Additional Driver");
+        Service service2 = new Service(30,"Towing Service");
+        Service service3 = new Service(10,"Roadside assistance");
+
+        ServiceDTO serviceDTO1 = ServiceMapper.INSTANCE.serviceEntityToDTO(service1);
+        ServiceDTO serviceDTO2 = ServiceMapper.INSTANCE.serviceEntityToDTO(service2);
+        ServiceDTO serviceDTO3 = ServiceMapper.INSTANCE.serviceEntityToDTO(service3);
+
+        serviceService.save(serviceDTO1);
+        serviceService.save(serviceDTO2);
+        serviceService.save(serviceDTO3);
+
+    }
 
     @Test
     @Commit
