@@ -1,18 +1,18 @@
 package com.example.RentCar.TestCar;
 
 import com.example.RentCar.DTO.CarDTO;
+import com.example.RentCar.DTO.EquipmentDTO;
 import com.example.RentCar.DTO.LocationDTO;
 import com.example.RentCar.DTO.MemberDTO;
 import com.example.RentCar.Mapper.CarMapper;
+import com.example.RentCar.Mapper.EquipmentMapper;
 import com.example.RentCar.Mapper.LocationMapper;
 import com.example.RentCar.Mapper.MemberMapper;
 import com.example.RentCar.Model.Car;
+import com.example.RentCar.Model.Equipment;
 import com.example.RentCar.Model.Location;
 import com.example.RentCar.Model.Member;
-import com.example.RentCar.Service.CarService;
-import com.example.RentCar.Service.LocationService;
-import com.example.RentCar.Service.MemberService;
-import com.example.RentCar.Service.ReservationService;
+import com.example.RentCar.Service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +35,9 @@ public class RentTest {
 
     @Autowired
     LocationService locationService;
+
+    @Autowired
+    EquipmentService equipmentService;
 
     @Test
     @Commit
@@ -94,12 +97,42 @@ public class RentTest {
 
     }
 
+
+    @Test
+    @Commit
+    public void saveEquipment() {
+        saveLocation();
+
+        Equipment equipment1 = new Equipment(50.5,"Snow Tyres");
+        Equipment equipment2 = new Equipment(20.5,"Child Seat");
+        Equipment equipment3 = new Equipment(30.5,"Baby Seat");
+        Equipment equipment4 = new Equipment(10.5,"Roof Box");
+        Equipment equipment5 = new Equipment(60.5,"WIFI");
+        Equipment equipment6 = new Equipment(10.5,"GPS");
+
+        EquipmentDTO equipmentDTO1 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment1);
+        EquipmentDTO equipmentDTO2 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment2);
+        EquipmentDTO equipmentDTO3 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment3);
+        EquipmentDTO equipmentDTO4 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment4);
+        EquipmentDTO equipmentDTO5 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment5);
+        EquipmentDTO equipmentDTO6 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment6);
+
+        equipmentService.save(equipmentDTO1);
+        equipmentService.save(equipmentDTO2);
+        equipmentService.save(equipmentDTO3);
+        equipmentService.save(equipmentDTO4);
+        equipmentService.save(equipmentDTO5);
+        equipmentService.save(equipmentDTO6);
+
+    }
+
+
     @Test
     @Commit
     public void makeReservation() {
-        saveMember();
+        saveLocation();
 
-        //reservationService.makeReservation("123",5,1,)
+        //reservationService.makeReservation("123",5,1,1,2,)
 
     }
 
