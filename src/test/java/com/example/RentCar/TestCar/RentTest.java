@@ -142,9 +142,9 @@ public class RentTest {
     @Test
     @Commit
     public void makeReservation() {
-        saveLocation();
+        saveService();
 
-        //reservationService.makeReservation("123",5,1,1,2,)
+        reservationService.makeReservation("123",5,1,1,2,)
 
     }
 
