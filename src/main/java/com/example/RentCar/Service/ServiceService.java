@@ -6,6 +6,9 @@ import com.example.RentCar.Repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ServiceService {
 
@@ -21,6 +24,17 @@ public class ServiceService {
         serviceRepository.save(service);
 
         return serviceMapper.serviceEntityToDTO(service);
+    }
+
+    public List<ServiceDTO> getAllService() {
+        List<com.example.RentCar.Model.Service> listOfService = serviceRepository.findAll();
+        List<ServiceDTO> dtoList = new ArrayList<>();
+
+        for (com.example.RentCar.Model.Service service : listOfService)
+            dtoList.add(serviceMapper.serviceEntityToDTO(service));
+
+        return dtoList;
+
     }
 
 }
