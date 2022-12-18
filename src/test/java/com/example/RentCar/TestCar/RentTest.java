@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,6 +34,12 @@ public class RentTest {
 
     @Autowired
     ServiceService serviceService;
+
+    @Autowired
+    EquipmentMapper equipmentMapper;
+
+    @Autowired
+    ServiceMapper serviceMapper;
 
     @Test
     @Commit
@@ -141,11 +149,28 @@ public class RentTest {
 
     @Test
     @Commit
-    public void makeReservation() {
+    public void makeReservation() throws ParseException {
         saveService();
 
-        reservationService.makeReservation("123",5,1,1,2,)
+        List<EquipmentDTO> equipmentDTOList = equipmentService.getAllEquipmentList();
+        List<ServiceDTO> serviceDTOList = serviceService.getAllServiceList();
 
+        List<Equipment> equipmentList = new ArrayList<>();
+        List<Service> serviceList = new ArrayList<>();
+
+        for (EquipmentDTO equipment : equipmentDTOList)
+            equipmentList.add(equipmentMapper.equipmentDTOToEntity(equipment));
+
+        for (ServiceDTO service : serviceDTOList)
+            serviceList.add(serviceMapper.serviceDTOToEntity(service));
+
+        ReservationDTO reservationDTO = reservationService.makeReservation("123",5,1L,1,2,equipmentList,serviceList);
+
+        System.out.println(reservationDTO.getReservationNumber());
+        System.out.println(reservationDTO.getPickUpDate());
+        System.out.println(reservationDTO.getDropOffDate());
+        System.out.println(reservationDTO.getDropOffLocation().getCode() + "- " + reservationDTO.getDropOffLocation().getAddress());
+        System.out.println(reservationDTO.getAmount());
     }
 
 

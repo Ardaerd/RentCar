@@ -26,7 +26,7 @@ public class ServiceService {
         return serviceMapper.serviceEntityToDTO(service);
     }
 
-    public List<ServiceDTO> getAllService() {
+    public List<ServiceDTO> getAllServiceList() {
         List<com.example.RentCar.Model.Service> listOfService = serviceRepository.findAll();
         List<ServiceDTO> dtoList = new ArrayList<>();
 

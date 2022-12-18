@@ -83,11 +83,11 @@ public class Reservation {
         this.returnDate = returnDate;
     }
 
-    public String getStatu() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatu(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
