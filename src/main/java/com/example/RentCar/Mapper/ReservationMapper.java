@@ -12,14 +12,17 @@ public interface ReservationMapper {
 
     ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
 
+    @Mapping(target = "amount",ignore = true)
     ReservationDTO reservationEntityToDTO(Reservation reservation);
 
     @InheritInverseConfiguration
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "reservationNumber")
+    @Mapping(target = "car", ignore = true)
     @Mapping(target = "creationDate",ignore = true)
     @Mapping(target = "pickUpDate")
     @Mapping(target = "dropOffDate")
+    @Mapping(target = "pickUpLocation")
     @Mapping(target = "dropOffLocation")
     @Mapping(target = "returnDate",ignore = true)
     @Mapping(target = "status",ignore = true)

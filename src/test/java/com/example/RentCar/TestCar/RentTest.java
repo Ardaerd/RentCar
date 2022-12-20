@@ -82,9 +82,9 @@ public class RentTest {
         saveMember();
 
         Location location1 = new Location(1,"İstanbul Airport");
-        Location location2 = new Location(2,"İstanbul Sabiha Gökçen Airport");
-        Location location3 = new Location(3,"İstanbul Kadıköy");
-        Location location4 = new Location(4,"İzmir City Center");
+        Location location2 = new Location(2,"Istanbul Sabiha Gökçen Airport");
+        Location location3 = new Location(3,"Istanbul Kadıköy");
+        Location location4 = new Location(4,"Izmir City Center");
 
         LocationDTO locationDTO1 = LocationMapper.INSTANCE.locationEntityToDTO(location1);
         LocationDTO locationDTO2 = LocationMapper.INSTANCE.locationEntityToDTO(location2);
@@ -171,6 +171,25 @@ public class RentTest {
         System.out.println(reservationDTO.getDropOffDate());
         System.out.println(reservationDTO.getDropOffLocation().getCode() + "- " + reservationDTO.getDropOffLocation().getAddress());
         System.out.println(reservationDTO.getAmount());
+    }
+
+    @Test
+    @Commit
+    public void testGetAllRentedCar() throws ParseException {
+        makeReservation();
+        System.out.println("Rented Cars: ");
+
+        List<RentedCarDTO> dtos= carService.getAllRentedCars();
+
+        for (RentedCarDTO dto : dtos) {
+            System.out.println(dto.getBarcode());
+            System.out.println(dto.getCarType());
+            System.out.println(dto.getModel());
+            System.out.println(dto.getMemberName());
+            System.out.println(dto.getTransmissionType());
+            System.out.println(dto.getReservationDayCount());
+        }
+
     }
 
 

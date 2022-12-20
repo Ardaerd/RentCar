@@ -14,6 +14,9 @@ public class Reservation {
     private Long id;
 
     private String reservationNumber;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
     @CreatedDate
     @Temporal(TemporalType.DATE)
     private Date creationDate;
@@ -24,23 +27,59 @@ public class Reservation {
     @JoinColumn(name = "drop_off_location_id")
     private Location dropOffLocation;
 
+    @ManyToOne
+    @JoinColumn(name = "pick_up_location_id")
+    private Location pickUpLocation;
+
     private Date returnDate;
     private String status;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+
     public Reservation() {
     }
 
-    public Reservation(String reservationNumber, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Date returnDate, String status, Member member) {
+    public Reservation(String reservationNumber, Car car, Date creationDate, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member) {
         this.reservationNumber = reservationNumber;
+        this.car = car;
+        this.creationDate = creationDate;
         this.pickUpDate = pickUpDate;
         this.dropOffDate = dropOffDate;
         this.dropOffLocation = dropOffLocation;
+        this.pickUpLocation = pickUpLocation;
         this.returnDate = returnDate;
         this.status = status;
         this.member = member;
+    }
+
+    public Reservation(String reservationNumber, Car car, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member) {
+        this.reservationNumber = reservationNumber;
+        this.car = car;
+        this.pickUpDate = pickUpDate;
+        this.dropOffDate = dropOffDate;
+        this.dropOffLocation = dropOffLocation;
+        this.pickUpLocation = pickUpLocation;
+        this.returnDate = returnDate;
+        this.status = status;
+        this.member = member;
+    }
+
+    public Location getPickUpLocation() {
+        return pickUpLocation;
+    }
+
+    public void setPickUpLocation(Location pickUpLocation) {
+        this.pickUpLocation = pickUpLocation;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public String getReservationNumber() {

@@ -8,6 +8,7 @@ import com.example.RentCar.Repository.LocationRepository;
 import com.example.RentCar.Repository.MemberRepository;
 import com.example.RentCar.Repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,7 @@ public class ReservationService {
         return reservationMapper.reservationEntityToDTO(reservation);
     }
 
+    @Transactional
     public ReservationDTO makeReservation(String carBarcodeNum, int dayCount, Long memberId, int pickUpCode, int dropOffCode, List<Equipment> equipmentList, List<Service> serviceList) throws ParseException {
         double totalAmount = 0;
 
@@ -65,8 +67,10 @@ public class ReservationService {
         for (Service service : serviceList)
             totalAmount += service.getFixedPrice();
 
-        Reservation reservation = new Reservation(reservationNumber,pickUpDate,dropOffDate,dropOffLocation,dropOffDate,"Loaned",member);
+        Reservation reservation = new Reservation(reservationNumber,car,pickUpDate,dropOffDate,dropOffLocation,pickUpLocation,dropOffDate,"Active",member);
         reservationRepository.save(reservation);
+
+        carRepository.updateStatus("Loaned",car.getId());
 
         ReservationDTO reservationDTO = reservationMapper.reservationEntityToDTO(reservation);
 
