@@ -12,13 +12,23 @@ public class Service {
 
     private double fixedPrice;
     private String name;
+    private int code;
 
     public Service() {
     }
 
-    public Service(double fixedPrice, String name) {
+    public Service(double fixedPrice, String name, int code) {
         this.fixedPrice = fixedPrice;
         this.name = name;
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public double getFixedPrice() {

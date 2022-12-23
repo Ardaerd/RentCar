@@ -27,13 +27,20 @@ public class ReservationService {
     private MemberRepository memberRepository;
     @Autowired
     private LocationRepository locationRepository;
-
     @Autowired
     private ReservationMapper reservationMapper;
 
+    @Transactional
     public ReservationDTO save(ReservationDTO dto) {
         Reservation reservation = reservationMapper.reservationDTOToEntity(dto);
         reservationRepository.save(reservation);
+
+        return reservationMapper.reservationEntityToDTO(reservation);
+    }
+
+    @Transactional
+    public ReservationDTO getReservationById(float id) {
+        Reservation reservation = reservationRepository.findById(id).get();
 
         return reservationMapper.reservationEntityToDTO(reservation);
     }
@@ -67,7 +74,7 @@ public class ReservationService {
         for (Service service : serviceList)
             totalAmount += service.getFixedPrice();
 
-        Reservation reservation = new Reservation(reservationNumber,car,pickUpDate,dropOffDate,dropOffLocation,pickUpLocation,dropOffDate,"Active",member);
+        Reservation reservation = new Reservation(reservationNumber,car,pickUpDate,dropOffDate,dropOffLocation,pickUpLocation,dropOffDate,"Active",member,serviceList,equipmentList);
         reservationRepository.save(reservation);
 
         carRepository.updateStatus("Loaned",car.getId());

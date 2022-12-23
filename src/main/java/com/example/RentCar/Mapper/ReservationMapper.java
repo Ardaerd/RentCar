@@ -27,5 +27,7 @@ public interface ReservationMapper {
     @Mapping(target = "returnDate",ignore = true)
     @Mapping(target = "status",ignore = true)
     @Mapping(target = "member",ignore = true)
+    @Mapping(target = "services", ignore = true)
+    @Mapping(target = "equipments",ignore = true)
     Reservation reservationDTOToEntity(ReservationDTO dto);
 }

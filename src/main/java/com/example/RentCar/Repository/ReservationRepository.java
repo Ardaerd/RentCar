@@ -14,5 +14,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Float> 
     @Query(value = "SELECT * FROM RESERVATION R WHERE R.CAR_ID  = :car",nativeQuery = true)
     List<Reservation> findReservationsByCarId(@Param("car") float carId);
 
+    @Query(value = "SELECT * FROM RESERVATION R WHERE R.RESERVATION_NUMBER  = :reservationNumber",nativeQuery = true)
+    Reservation findReservationByReservationNumber(@Param("reservationNumber") String reservationNumber);
 
 }

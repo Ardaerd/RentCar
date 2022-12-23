@@ -15,8 +15,9 @@ public interface ServiceMapper {
     ServiceDTO serviceEntityToDTO(Service service);
 
     @InheritInverseConfiguration
-    @Mapping(target = "id")
+    @Mapping(target = "id",ignore = true)
     @Mapping(target = "fixedPrice")
     @Mapping(target = "name")
+    @Mapping(target = "code")
     Service serviceDTOToEntity(ServiceDTO dto);
 }

@@ -3,7 +3,9 @@ package com.example.RentCar.Model;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Reservation")
@@ -37,6 +39,11 @@ public class Reservation {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    private List<Service> services = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    private List<Equipment> equipments = new ArrayList<>();
 
     public Reservation() {
     }
@@ -54,7 +61,7 @@ public class Reservation {
         this.member = member;
     }
 
-    public Reservation(String reservationNumber, Car car, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member) {
+    public Reservation(String reservationNumber, Car car, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member, List<Service> services, List<Equipment> equipments) {
         this.reservationNumber = reservationNumber;
         this.car = car;
         this.pickUpDate = pickUpDate;
@@ -64,6 +71,24 @@ public class Reservation {
         this.returnDate = returnDate;
         this.status = status;
         this.member = member;
+        this.equipments = equipments;
+        this.services = services;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(List<Equipment> equipments) {
+        this.equipments = equipments;
     }
 
     public Location getPickUpLocation() {

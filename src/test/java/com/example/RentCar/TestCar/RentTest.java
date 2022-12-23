@@ -105,12 +105,12 @@ public class RentTest {
     public void saveEquipment() {
         saveLocation();
 
-        Equipment equipment1 = new Equipment(50.5,"Snow Tyres");
-        Equipment equipment2 = new Equipment(20.5,"Child Seat");
-        Equipment equipment3 = new Equipment(30.5,"Baby Seat");
-        Equipment equipment4 = new Equipment(10.5,"Roof Box");
-        Equipment equipment5 = new Equipment(60.5,"WIFI");
-        Equipment equipment6 = new Equipment(10.5,"GPS");
+        Equipment equipment1 = new Equipment(50.5,"Snow Tyres",1);
+        Equipment equipment2 = new Equipment(20.5,"Child Seat",2);
+        Equipment equipment3 = new Equipment(30.5,"Baby Seat",3);
+        Equipment equipment4 = new Equipment(10.5,"Roof Box",4);
+        Equipment equipment5 = new Equipment(60.5,"WIFI",5);
+        Equipment equipment6 = new Equipment(10.5,"GPS",6);
 
         EquipmentDTO equipmentDTO1 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment1);
         EquipmentDTO equipmentDTO2 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment2);
@@ -133,9 +133,9 @@ public class RentTest {
     public void saveService() {
         saveEquipment();
 
-        Service service1 = new Service(40,"Additional Driver");
-        Service service2 = new Service(30,"Towing Service");
-        Service service3 = new Service(10,"Roadside assistance");
+        Service service1 = new Service(40,"Additional Driver",1);
+        Service service2 = new Service(30,"Towing Service",2);
+        Service service3 = new Service(10,"Roadside assistance",3);
 
         ServiceDTO serviceDTO1 = ServiceMapper.INSTANCE.serviceEntityToDTO(service1);
         ServiceDTO serviceDTO2 = ServiceMapper.INSTANCE.serviceEntityToDTO(service2);
@@ -187,10 +187,24 @@ public class RentTest {
             System.out.println(dto.getModel());
             System.out.println(dto.getMemberName());
             System.out.println(dto.getTransmissionType());
-            System.out.println(dto.getReservationDayCount());
+            System.out.println(dto.getReservationDayCount()); // this is not working
         }
 
     }
 
+    @Test
+    @Commit
+    public void testAddAdditionalServices() throws ParseException {
+        makeReservation();
+        Service service = new Service(40,"Additional Driver",4);
+        ServiceDTO serviceDTO = ServiceMapper.INSTANCE.serviceEntityToDTO(service);
+
+        serviceService.save(serviceDTO);
+
+        ReservationDTO reservationDTO = reservationService.getReservationById(1);
+        Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
+
+        serviceService.addAdditionalServiceToReservation(reservation.getReservationNumber(),4);
+    }
 
 }

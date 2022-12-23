@@ -15,9 +15,10 @@ public interface EquipmentMapper {
     EquipmentDTO equipmentEntityToDTO(Equipment equipment);
 
     @InheritInverseConfiguration
-    @Mapping(target = "id")
+    @Mapping(target = "id",ignore = true)
     @Mapping(target = "fixedPrice")
     @Mapping(target = "name")
+    @Mapping(target = "code")
     Equipment equipmentDTOToEntity(EquipmentDTO dto);
 
 }

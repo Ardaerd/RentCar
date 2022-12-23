@@ -5,6 +5,7 @@ public class EquipmentDTO {
     private Long id;
     private double fixedPrice;
     private String name;
+    private int code;
 
     public EquipmentDTO() {
 
@@ -14,6 +15,20 @@ public class EquipmentDTO {
         this.id = id;
         this.fixedPrice = fixedPrice;
         this.name = name;
+    }
+
+    public EquipmentDTO(double fixedPrice, String name, int code) {
+        this.fixedPrice = fixedPrice;
+        this.name = name;
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public Long getId() {
