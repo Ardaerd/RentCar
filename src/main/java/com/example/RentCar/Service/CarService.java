@@ -49,6 +49,15 @@ public class CarService {
         return carMapper.carEntityToDTO(car);
     }
 
+    public List<CarDTO> getAllCars() {
+        List<Car> cars = carRepository.findAll();
+        List<CarDTO> dtoList = new ArrayList<>();
+
+        for (Car car : cars)
+            dtoList.add(carMapper.carEntityToDTO(car));
+
+        return dtoList;
+    }
 
     public List<CarDTO> findAvailableCars(String carType, String transmissionType) {
         List<Car> listOfCars = carRepository.findDesiredCars("available",carType,transmissionType);
