@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment,Float> {
+
+    Equipment findEquipmentByCode(int code);
+
 }
