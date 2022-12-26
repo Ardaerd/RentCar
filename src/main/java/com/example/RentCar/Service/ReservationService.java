@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,17 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return reservationMapper.reservationEntityToDTO(reservation);
+    }
+
+    @Transactional
+    public List<ReservationDTO> getAllReservations() {
+        List<Reservation> reservationList = reservationRepository.findAll();
+        List<ReservationDTO> dtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservationList)
+            dtoList.add(reservationMapper.reservationEntityToDTO(reservation));
+
+        return dtoList;
     }
 
     @Transactional

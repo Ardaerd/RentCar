@@ -2,6 +2,7 @@ package com.example.RentCar.Config;
 
 import com.example.RentCar.Model.*;
 import com.example.RentCar.Repository.*;
+import com.example.RentCar.Service.ReservationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,8 @@ public class RentCarConfig {
             ServiceRepository serviceRepository,
             MemberRepository memberRepository,
             ReservationRepository reservationRepository,
-            LocationRepository locationRepository
+            LocationRepository locationRepository,
+            ReservationService reservationService
     ) {
         return args -> {
             List<Equipment> equipmentList = new ArrayList<>();
@@ -82,10 +84,14 @@ public class RentCarConfig {
             carRepository.saveAll(List.of(car1,car2));
             locationRepository.saveAll(List.of(location1,location2,location3,location4));
             memberRepository.saveAll(List.of(member1,member2));
-            //equipmentRepository.saveAll(List.of(equipment1,equipment2));
-            //serviceRepository.saveAll(serviceList);
+            equipmentRepository.saveAll(List.of(equipment1,equipment2));
+            serviceRepository.saveAll(serviceList);
             reservationRepository.save(reservation);
 
+//            List<Equipment> equipments = equipmentRepository.findAll();
+//            List<Service> services = serviceRepository.findAll();
+//
+//            reservationService.makeReservation("123",4, 1L,1,2,equipments,services);
         };
     }
 }
