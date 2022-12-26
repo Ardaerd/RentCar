@@ -1,8 +1,12 @@
 package com.example.RentCar.TestCar;
 
 import com.example.RentCar.DTO.*;
-import com.example.RentCar.Mapper.*;
-import com.example.RentCar.Model.*;
+import com.example.RentCar.Mapper.EquipmentMapper;
+import com.example.RentCar.Mapper.ReservationMapper;
+import com.example.RentCar.Mapper.ServiceMapper;
+import com.example.RentCar.Model.Equipment;
+import com.example.RentCar.Model.Reservation;
+import com.example.RentCar.Model.Service;
 import com.example.RentCar.Service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,93 +56,6 @@ public class RentTest {
 
     }
 
-//    @Test
-//    @Commit
-//    public void saveMember() {
-//        saveCar();
-//
-//        Member member1 = new Member("Arda","05415374277","arderd@gmail.com","Ozyegin Uni.",5);
-//        Member member2 = new Member("Uygar","0563212378","uygargn@gmail.com","Ozyegin Uni.",6);
-//
-//        MemberDTO memberDTO1 = MemberMapper.INSTANCE.memberEntityToDTO(member1);
-//        MemberDTO memberDTO2 = MemberMapper.INSTANCE.memberEntityToDTO(member2);
-//
-//        memberService.save(memberDTO1);
-//        memberService.save(memberDTO2);
-//
-//    }
-
-//    @Test
-//    @Commit
-//    public void saveLocation() {
-//        saveMember();
-//
-//        Location location1 = new Location(1,"İstanbul Airport");
-//        Location location2 = new Location(2,"Istanbul Sabiha Gökçen Airport");
-//        Location location3 = new Location(3,"Istanbul Kadıköy");
-//        Location location4 = new Location(4,"Izmir City Center");
-//
-//        LocationDTO locationDTO1 = LocationMapper.INSTANCE.locationEntityToDTO(location1);
-//        LocationDTO locationDTO2 = LocationMapper.INSTANCE.locationEntityToDTO(location2);
-//        LocationDTO locationDTO3 = LocationMapper.INSTANCE.locationEntityToDTO(location3);
-//        LocationDTO locationDTO4 = LocationMapper.INSTANCE.locationEntityToDTO(location4);
-//
-//        locationService.save(locationDTO1);
-//        locationService.save(locationDTO2);
-//        locationService.save(locationDTO3);
-//        locationService.save(locationDTO4);
-//
-//
-//    }
-
-
-//    @Test
-//    @Commit
-//    public void saveEquipment() {
-//        saveLocation();
-//
-//        Equipment equipment1 = new Equipment(50.5,"Snow Tyres",1);
-//        Equipment equipment2 = new Equipment(20.5,"Child Seat",2);
-//        Equipment equipment3 = new Equipment(30.5,"Baby Seat",3);
-//        Equipment equipment4 = new Equipment(10.5,"Roof Box",4);
-//        Equipment equipment5 = new Equipment(60.5,"WIFI",5);
-//        Equipment equipment6 = new Equipment(10.5,"GPS",6);
-//
-//        EquipmentDTO equipmentDTO1 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment1);
-//        EquipmentDTO equipmentDTO2 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment2);
-//        EquipmentDTO equipmentDTO3 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment3);
-//        EquipmentDTO equipmentDTO4 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment4);
-//        EquipmentDTO equipmentDTO5 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment5);
-//        EquipmentDTO equipmentDTO6 = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment6);
-//
-//        equipmentService.save(equipmentDTO1);
-//        equipmentService.save(equipmentDTO2);
-//        equipmentService.save(equipmentDTO3);
-//        equipmentService.save(equipmentDTO4);
-//        equipmentService.save(equipmentDTO5);
-//        equipmentService.save(equipmentDTO6);
-//
-//    }
-
-//    @Test
-//    @Commit
-//    public void saveService() {
-//        saveEquipment();
-//
-//        Service service1 = new Service(40,"Additional Driver",1);
-//        Service service2 = new Service(30,"Towing Service",2);
-//        Service service3 = new Service(10,"Roadside assistance",3);
-//
-//        ServiceDTO serviceDTO1 = ServiceMapper.INSTANCE.serviceEntityToDTO(service1);
-//        ServiceDTO serviceDTO2 = ServiceMapper.INSTANCE.serviceEntityToDTO(service2);
-//        ServiceDTO serviceDTO3 = ServiceMapper.INSTANCE.serviceEntityToDTO(service3);
-//
-//        serviceService.save(serviceDTO1);
-//        serviceService.save(serviceDTO2);
-//        serviceService.save(serviceDTO3);
-//
-//    }
-
     @Test
     @Commit
     public void makeReservation() throws ParseException {
@@ -187,7 +104,7 @@ public class RentTest {
     @Commit
     public void testAddAdditionalServices() throws ParseException {
         makeReservation();
-        Service service = new Service(40,"Additional Driver",4);
+        Service service = new Service(50,"Protection",4);
         ServiceDTO serviceDTO = ServiceMapper.INSTANCE.serviceEntityToDTO(service);
 
         serviceService.save(serviceDTO);
@@ -195,7 +112,23 @@ public class RentTest {
         ReservationDTO reservationDTO = reservationService.getReservationById(1);
         Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
 
-        serviceService.addAdditionalServiceToReservation(reservation.getReservationNumber(),4);
+        serviceService.addAdditionalServiceToReservation(reservation.getReservationNumber(),service.getCode());
+    }
+
+    @Test
+    @Commit
+    public void testAddAdditionalEquipment() throws ParseException {
+        testAddAdditionalServices();
+        Equipment equipment = new Equipment(15,"Turbo",7);
+        EquipmentDTO equipmentDTO = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment);
+
+        equipmentService.save(equipmentDTO);
+
+        ReservationDTO reservationDTO = reservationService.getReservationById(1);
+        Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
+
+        equipmentService.addAdditionalEquipmentToReservation(reservation.getReservationNumber(),equipment.getCode());
+
     }
 
 }
