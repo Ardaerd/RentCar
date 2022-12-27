@@ -156,14 +156,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public void initalize() {
+    public void initalize() throws ParseException {
         List<Equipment> equipmentList = new ArrayList<>();
         List<Service> serviceList = new ArrayList<>();
 
         Car car1 = new Car("123",
                 5463,
                 4,
-                "Tesla esma",
+                "Tesla",
                 "Sport X",
                 "Auto",
                 13,
@@ -230,8 +230,6 @@ public class ReservationService {
         equipmentRepository.saveAll(List.of(equipment1,equipment2));
         serviceRepository.saveAll(serviceList);
 
-        Reservation reservation = new Reservation("12345678",car1,new java.sql.Date(System.currentTimeMillis()),new java.sql.Date(System.currentTimeMillis()),new java.sql.Date(System.currentTimeMillis()),location1,location2,new java.sql.Date(System.currentTimeMillis()),"Active",member1);
-
-        reservationRepository.save(reservation);
+        makeReservation("1323",5,1L,1,2,equipmentList,serviceList);
     }
 }
