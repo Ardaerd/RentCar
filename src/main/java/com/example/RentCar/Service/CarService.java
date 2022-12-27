@@ -59,16 +59,21 @@ public class CarService {
 
     @Transactional
     public boolean deleteCar(String carBarcodeNum) {
-        System.out.println("bura");
-        Car car = carRepository.findCarByBarcode(carBarcodeNum);
-        List<Reservation> reservation = reservationRepository.findReservationsByCarId(car.getId());
 
-        if (car.getStatus().equals("Available") && reservation.size() < 1) {
+        try {
+            Car car = carRepository.findCarByBarcode(carBarcodeNum);
+            List<Reservation> reservation = reservationRepository.findReservationsByCarId(car.getId());
 
-            carRepository.deleteCarByBarcode(carBarcodeNum);
+            if (car.getStatus().equals("Available") && reservation.size() < 1) {
 
-            return true;
-        } else {
+                carRepository.deleteCarByBarcode(carBarcodeNum);
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }

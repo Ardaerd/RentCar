@@ -55,10 +55,24 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
+
+    @DeleteMapping(value = "/deleteCar/{carBarcode}")
+    @Operation(summary = "Delete Car",description = "Delete car from the db")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CarDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Not Found"),
+            @ApiResponse(responseCode = "406", description = "Not acceptable"),
+            @ApiResponse(responseCode = "500", description = "Exception is thrown") })
+    public ResponseEntity<Boolean> deleteCar(@PathVariable("carBarcode") String carBarcodeNum) {
+        Boolean isDeleted = carService.deleteCar(carBarcodeNum);
+        return ResponseEntity.status(HttpStatus.OK).body(isDeleted);
+    }
+
+
     @PostMapping(value = "/saveCar")
     @Operation(summary = "Save car", description = "Save car to the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = RentedCarDTO.class))),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CarDTO.class))),
             @ApiResponse(responseCode = "404", description = "No car is saved") })
     public  ResponseEntity<CarDTO> save(@RequestBody CarDTO dto) {
         CarDTO carDTO = carService.save(dto);
