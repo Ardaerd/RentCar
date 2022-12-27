@@ -45,4 +45,15 @@ public class ReservationController {
         ReservationDTO dto = reservationService.makeReservation(carBarcodeNum, dayCount, memberId, pickUpCode, dropOffCode, equipments, services);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
+
+    @PutMapping(value = "/returnCar/{reservationNumber}")
+    @Operation(summary = "Returning the car",description = "Updating car status Available and reservation status Completed")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ReservationDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Exception is thrown") })
+    public ResponseEntity<Boolean> returnCar(@PathVariable("reservationNumber") String reservationNumber) {
+        Boolean isCarReturned = reservationService.returnCar(reservationNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(isCarReturned);
+    }
 }
