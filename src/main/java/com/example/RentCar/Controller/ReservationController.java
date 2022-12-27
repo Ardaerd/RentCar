@@ -56,4 +56,16 @@ public class ReservationController {
         Boolean isCarReturned = reservationService.returnCar(reservationNumber);
         return ResponseEntity.status(HttpStatus.OK).body(isCarReturned);
     }
+
+    @PutMapping(value = "/cancelReservation/{reservationNumber}")
+    @Operation(summary = "Cancel Reservation",description = "Updating reservation status as Cancelled")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ReservationDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Exception is thrown") })
+    public ResponseEntity<Boolean> cancelReservation(@PathVariable("reservationNumber") String reservationNumber) {
+        Boolean isCancelled = reservationService.cancelReservation(reservationNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(isCancelled);
+    }
+
 }
