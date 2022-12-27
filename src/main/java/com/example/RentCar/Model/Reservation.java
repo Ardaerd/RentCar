@@ -22,7 +22,9 @@ public class Reservation {
     @CreatedDate
     @Temporal(TemporalType.DATE)
     private Date creationDate;
+    @Temporal(TemporalType.DATE)
     private Date pickUpDate;
+    @Temporal(TemporalType.DATE)
     private Date dropOffDate;
 
     @ManyToOne
@@ -33,6 +35,7 @@ public class Reservation {
     @JoinColumn(name = "pick_up_location_id")
     private Location pickUpLocation;
 
+    @Temporal(TemporalType.DATE)
     private Date returnDate;
     private String status;
     @ManyToOne

@@ -55,9 +55,12 @@ public class ReservationService {
     @Transactional
     public boolean returnCar(String reservationNumber) {
         try {
+            Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber);
             reservationRepository.updateStatusAndReturnDateByReservationNumber(reservationNumber);
-            System.out.println("burası");
 
+            Car car = reservation.getCar();
+
+            carRepository.updateStatus("Available", car.getId());
 
             return true;
 
@@ -65,6 +68,71 @@ public class ReservationService {
             System.out.println(e.getMessage());
             System.out.println("hata");
             return false;
+        }
+    }
+
+
+
+    public List<ReservationDTO> getAllReservations() {
+        List<Reservation> reservationList = reservationRepository.findAll();
+        List<ReservationDTO> dtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservationList)
+            dtoList.add(reservationMapper.reservationEntityToDTO(reservation));
+
+        return dtoList;
+    }
+
+    public ReservationDTO getReservationById(float id) {
+        Reservation reservation = reservationRepository.findById(id).get();
+
+        return reservationMapper.reservationEntityToDTO(reservation);
+    }
+
+    @Transactional
+    public ReservationDTO makeReservation(String carBarcodeNum, int dayCount, Long memberId, int pickUpCode, int dropOffCode, List<Equipment> equipmentList, List<Service> serviceList) throws ParseException {
+        double totalAmount = 0;
+
+        Car car = carRepository.findCarByBarcode(carBarcodeNum);
+
+        if (car.getStatus().equals("Available")) {
+            Member member = memberRepository.findById(memberId).get();
+            Location pickUpLocation = locationRepository.findLocationByCode(pickUpCode);
+            Location dropOffLocation = locationRepository.findLocationByCode(dropOffCode);
+
+            int reservationNumInt = (int) (Math.random()*(99999999-10000000+1)+10000000);
+            String reservationNumber = Integer.toString(reservationNumInt);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            Date pickUpDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(formatter.format(date));
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(pickUpDate);
+            c.add(Calendar.DATE,dayCount);
+            Date dropOffDate = c.getTime();
+
+            totalAmount = car.getDailyPrice() * dayCount;
+
+            for (Equipment equipment : equipmentList)
+                totalAmount += equipment.getFixedPrice();
+
+            for (Service service : serviceList)
+                totalAmount += service.getFixedPrice();
+
+            Reservation reservation = new Reservation(reservationNumber,car,pickUpDate,dropOffDate,dropOffLocation,pickUpLocation,dropOffDate,"Active",member,serviceList,equipmentList);
+            reservationRepository.save(reservation);
+
+            carRepository.updateStatus("Loaned",car.getId());
+
+            ReservationDTO reservationDTO = reservationMapper.reservationEntityToDTO(reservation);
+
+            reservationDTO.setAmount(totalAmount);
+            reservationDTO.setPickUpLocation(pickUpLocation);
+
+            return reservationDTO;
+        } else {
+            return null;
         }
     }
 
@@ -146,68 +214,5 @@ public class ReservationService {
         Reservation reservation = new Reservation("12345678",car1,new java.sql.Date(System.currentTimeMillis()),new java.sql.Date(System.currentTimeMillis()),new java.sql.Date(System.currentTimeMillis()),location1,location2,new java.sql.Date(System.currentTimeMillis()),"Active",member1);
 
         reservationRepository.save(reservation);
-    }
-
-    public List<ReservationDTO> getAllReservations() {
-        List<Reservation> reservationList = reservationRepository.findAll();
-        List<ReservationDTO> dtoList = new ArrayList<>();
-
-        for (Reservation reservation : reservationList)
-            dtoList.add(reservationMapper.reservationEntityToDTO(reservation));
-
-        return dtoList;
-    }
-
-    public ReservationDTO getReservationById(float id) {
-        Reservation reservation = reservationRepository.findById(id).get();
-
-        return reservationMapper.reservationEntityToDTO(reservation);
-    }
-
-    @Transactional
-    public ReservationDTO makeReservation(String carBarcodeNum, int dayCount, Long memberId, int pickUpCode, int dropOffCode, List<Equipment> equipmentList, List<Service> serviceList) throws ParseException {
-        double totalAmount = 0;
-
-        Car car = carRepository.findCarByBarcode(carBarcodeNum);
-
-        if (car.getStatus().equals("Available")) {
-            Member member = memberRepository.findById(memberId).get();
-            Location pickUpLocation = locationRepository.findLocationByCode(pickUpCode);
-            Location dropOffLocation = locationRepository.findLocationByCode(dropOffCode);
-
-            int reservationNumInt = (int) (Math.random()*(99999999-10000000+1)+10000000);
-            String reservationNumber = Integer.toString(reservationNumInt);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date date = new Date();
-            Date pickUpDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(formatter.format(date));
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(pickUpDate);
-            c.add(Calendar.DATE,dayCount);
-            Date dropOffDate = c.getTime();
-
-            totalAmount = car.getDailyPrice() * dayCount;
-
-            for (Equipment equipment : equipmentList)
-                totalAmount += equipment.getFixedPrice();
-
-            for (Service service : serviceList)
-                totalAmount += service.getFixedPrice();
-
-            Reservation reservation = new Reservation(reservationNumber,car,pickUpDate,dropOffDate,dropOffLocation,pickUpLocation,dropOffDate,"Active",member,serviceList,equipmentList);
-            reservationRepository.save(reservation);
-
-            carRepository.updateStatus("Loaned",car.getId());
-
-            ReservationDTO reservationDTO = reservationMapper.reservationEntityToDTO(reservation);
-
-            reservationDTO.setAmount(totalAmount);
-            reservationDTO.setPickUpLocation(pickUpLocation);
-
-            return reservationDTO;
-        } else {
-            return null;
-        }
     }
 }
