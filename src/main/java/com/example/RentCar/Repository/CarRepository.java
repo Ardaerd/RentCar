@@ -25,4 +25,7 @@ public interface CarRepository extends JpaRepository<Car,Float> {
     @Query(value = "UPDATE CAR SET STATUS = :status WHERE ID = :id",nativeQuery = true)
     void updateStatus(@Param("status") String status, @Param("id") float id);
 
+    @Modifying
+    void deleteCarByBarcode(@Param("barcode") String barcodeNumber);
+
 }

@@ -47,7 +47,8 @@ public class RentTest {
 
     @Test
     @Commit
-    public void saveCar() {
+    public void testFindAvailableCars() {
+        reservationService.initalize();
 
         List<CarDTO> listofAvailableCars = carService.findAvailableCars("Sport","Auto");
 
@@ -59,7 +60,7 @@ public class RentTest {
     @Test
     @Commit
     public void makeReservation() throws ParseException {
-
+        testFindAvailableCars();
         List<EquipmentDTO> equipmentDTOList = equipmentService.getAllEquipmentList();
         List<ServiceDTO> serviceDTOList = serviceService.getAllServiceList();
 
@@ -72,7 +73,7 @@ public class RentTest {
         for (ServiceDTO service : serviceDTOList)
             serviceList.add(serviceMapper.serviceDTOToEntity(service));
 
-        ReservationDTO reservationDTO = reservationService.makeReservation("123",5,1L,1,2,equipmentList,serviceList);
+        ReservationDTO reservationDTO = reservationService.makeReservation("423",5,1L,1,2,equipmentList,serviceList);
 
         System.out.println(reservationDTO.getReservationNumber());
         System.out.println(reservationDTO.getPickUpDate());
@@ -129,6 +130,21 @@ public class RentTest {
 
         equipmentService.addAdditionalEquipmentToReservation(reservation.getReservationNumber(),equipment.getCode());
 
+    }
+
+//    @Test
+//    @Commit
+//    public void testReturnCar() throws ParseException {
+//        testAddAdditionalEquipment();
+//        boolean isReturn = reservationService.returnCar("12345678");
+//        System.out.println(isReturn);
+//    }
+
+    @Test
+    @Commit
+    public void testDeleteCar() throws ParseException {
+        testAddAdditionalEquipment();
+        carService.deleteCar("1323");
     }
 
 }

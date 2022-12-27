@@ -14,6 +14,7 @@ import com.example.RentCar.Repository.MemberRepository;
 import com.example.RentCar.Repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,29 @@ public class CarService {
         carRepository.save(car);
 
         return carMapper.carEntityToDTO(car);
+    }
+
+    @Transactional
+    public void saveList(List<Car> cars) {
+
+        carRepository.saveAll(cars);
+
+    }
+
+    @Transactional
+    public boolean deleteCar(String carBarcodeNum) {
+        System.out.println("bura");
+        Car car = carRepository.findCarByBarcode(carBarcodeNum);
+        List<Reservation> reservation = reservationRepository.findReservationsByCarId(car.getId());
+
+        if (car.getStatus().equals("Available") && reservation.size() < 1) {
+
+            carRepository.deleteCarByBarcode(carBarcodeNum);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<CarDTO> getAllCars() {

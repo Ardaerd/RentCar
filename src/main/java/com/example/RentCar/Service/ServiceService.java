@@ -38,6 +38,13 @@ public class ServiceService {
     }
 
     @Transactional
+    public void saveList(List<com.example.RentCar.Model.Service> services) {
+
+        serviceRepository.saveAll(services);
+
+    }
+
+    @Transactional
     public List<ServiceDTO> getAllServiceList() {
         List<com.example.RentCar.Model.Service> listOfService = serviceRepository.findAll();
         List<ServiceDTO> dtoList = new ArrayList<>();

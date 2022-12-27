@@ -31,6 +31,12 @@ public class EquipmentService {
         return equipmentMapper.equipmentEntityToDTO(equipment);
     }
 
+    @Transactional
+    public void saveAll(List<Equipment> equipmentList) {
+        equipmentRepository.saveAll(equipmentList);
+
+    }
+
     public List<EquipmentDTO> getAllEquipmentList() {
         List<Equipment> lisOfEquipment = equipmentRepository.findAll();
         List<EquipmentDTO> dtoList = new ArrayList<>();

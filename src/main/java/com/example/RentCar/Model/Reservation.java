@@ -16,7 +16,7 @@ public class Reservation {
     private Long id;
 
     private String reservationNumber;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id")
     private Car car;
     @CreatedDate

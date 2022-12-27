@@ -33,7 +33,7 @@ public class ServiceController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
-    @GetMapping(value = "/getServices/{reservationNum}/{serviceCode}")
+    @PostMapping(value = "/addServiceToReservation/{reservationNum}/{serviceCode}")
     @Operation(summary = "Add service to the reservation", description = "Add service to the reservation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ServiceDTO.class))),

@@ -6,6 +6,9 @@ import com.example.RentCar.Model.Member;
 import com.example.RentCar.Repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -21,6 +24,12 @@ public class MemberService {
         memberRepository.save(member);
 
         return memberMapper.memberEntityToDTO(member);
+    }
+
+    @Transactional
+    public void save(List<Member> members) {
+        memberRepository.saveAll(members);
+
     }
 
 }
