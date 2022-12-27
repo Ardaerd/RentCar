@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @SpringBootTest
 public class RentTest {
@@ -143,6 +145,13 @@ public class RentTest {
     public void testDeleteCar() throws ParseException {
         testReturnCar();
         carService.deleteCar("423");
+    }
+
+    @Test
+    @Commit
+    public void testCancelReservation() {
+        boolean isCancelled = reservationService.cancelReservation("12345678");
+        assertTrue(isCancelled);
     }
 
 }

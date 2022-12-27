@@ -72,6 +72,25 @@ public class ReservationService {
     }
 
 
+    @Transactional
+    public boolean cancelReservation(String reservationNumber) {
+
+        try {
+            Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber);
+            reservationRepository.updateStatusByReservationNumber("Cancelled",reservationNumber);
+
+            Car car = reservation.getCar();
+
+            carRepository.updateStatus("Available",car.getId());
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
+
 
     public List<ReservationDTO> getAllReservations() {
         List<Reservation> reservationList = reservationRepository.findAll();

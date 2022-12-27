@@ -22,4 +22,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Float> 
     @Query(value = "UPDATE RESERVATION SET STATUS = 'Completed', RETURN_DATE = CURRENT_DATE WHERE RESERVATION_NUMBER = :reservationNumber",nativeQuery = true)
     void updateStatusAndReturnDateByReservationNumber(@Param("reservationNumber") String reservationNumber);
 
+    @Modifying
+    @Query(value = "UPDATE RESERVATION SET STATUS = :status WHERE RESERVATION_NUMBER = :reservationNumber",nativeQuery = true)
+    void updateStatusByReservationNumber(@Param("status") String status ,@Param("reservationNumber") String reservationNumber);
+
 }
