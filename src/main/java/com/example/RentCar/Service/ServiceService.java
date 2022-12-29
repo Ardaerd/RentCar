@@ -57,6 +57,14 @@ public class ServiceService {
     }
 
     @Transactional
+    public List<com.example.RentCar.Model.Service> getServiceList() {
+        List<com.example.RentCar.Model.Service> listOfService = serviceRepository.findAll();
+
+        return listOfService;
+
+    }
+
+    @Transactional
     public boolean addAdditionalServiceToReservation(String reservationNumber,int code) {
         try {
             Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber);

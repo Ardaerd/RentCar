@@ -24,6 +24,7 @@ public class EquipmentService {
     @Autowired
     private EquipmentMapper equipmentMapper;
 
+    @Transactional
     public EquipmentDTO save(EquipmentDTO dto) {
         Equipment equipment = equipmentMapper.equipmentDTOToEntity(dto);
         equipmentRepository.save(equipment);
@@ -37,6 +38,14 @@ public class EquipmentService {
 
     }
 
+    @Transactional
+    public EquipmentDTO getEquipmentById(Float id) {
+        Equipment equipment = equipmentRepository.findById(id).get();
+        EquipmentDTO equipmentDTO = equipmentMapper.equipmentEntityToDTO(equipment);
+
+        return equipmentDTO;
+    }
+
     public List<EquipmentDTO> getAllEquipmentList() {
         List<Equipment> lisOfEquipment = equipmentRepository.findAll();
         List<EquipmentDTO> dtoList = new ArrayList<>();
@@ -48,6 +57,14 @@ public class EquipmentService {
     }
 
     @Transactional
+    public List<Equipment> getEquitments() {
+        List<Equipment> lisOfEquipment = equipmentRepository.findAll();
+
+        return lisOfEquipment;
+    }
+
+
+    @Transactional
     public Boolean addAdditionalEquipmentToReservation(String reservationNum,int equipmentCode) {
         try {
 
@@ -55,6 +72,8 @@ public class EquipmentService {
             Equipment equipment = equipmentRepository.findEquipmentByCode(equipmentCode);
 
             List<Equipment> equipmentList = reservation.getEquipments();
+
+            System.out.println("Id: " + equipment.getId());
 
             equipmentList.add(equipment);
             reservation.setEquipments(equipmentList);

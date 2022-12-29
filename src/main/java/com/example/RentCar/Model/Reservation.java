@@ -3,7 +3,8 @@ package com.example.RentCar.Model;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -42,11 +43,11 @@ public class Reservation {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
-    private List<Service> services = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    private List<Service> services;
 
-    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
-    private List<Equipment> equipments = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    private List<Equipment> equipments;
 
     public Reservation() {
     }
@@ -64,7 +65,7 @@ public class Reservation {
         this.member = member;
     }
 
-    public Reservation(String reservationNumber, Car car, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member, List<Service> services, List<Equipment> equipments) {
+    public Reservation(String reservationNumber, Car car, Date pickUpDate, Date dropOffDate, Location dropOffLocation, Location pickUpLocation, Date returnDate, String status, Member member, List<Service> services, List<Equipment> equipments) throws ParseException {
         this.reservationNumber = reservationNumber;
         this.car = car;
         this.pickUpDate = pickUpDate;
@@ -76,6 +77,9 @@ public class Reservation {
         this.member = member;
         this.equipments = equipments;
         this.services = services;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        this.creationDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(formatter.format(date));
     }
 
     public List<Service> getServices() {

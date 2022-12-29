@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,19 +60,12 @@ public class RentTest {
 
     @Test
     @Commit
+    @Transactional
     public void makeReservation() throws ParseException {
         testFindAvailableCars();
-        List<EquipmentDTO> equipmentDTOList = equipmentService.getAllEquipmentList();
-        List<ServiceDTO> serviceDTOList = serviceService.getAllServiceList();
 
-        List<Equipment> equipmentList = new ArrayList<>();
-        List<Service> serviceList = new ArrayList<>();
-
-        for (EquipmentDTO equipment : equipmentDTOList)
-            equipmentList.add(equipmentMapper.equipmentDTOToEntity(equipment));
-
-        for (ServiceDTO service : serviceDTOList)
-            serviceList.add(serviceMapper.serviceDTOToEntity(service));
+        List<Equipment> equipmentList = equipmentService.getEquitments();
+        List<Service> serviceList = serviceService.getServiceList();
 
         ReservationDTO reservationDTO = reservationService.makeReservation("123",5,1L,1,2,equipmentList,serviceList);
 
@@ -103,6 +96,7 @@ public class RentTest {
 
     @Test
     @Commit
+    @Transactional
     public void testAddAdditionalServices() throws ParseException {
         makeReservation();
         Service service = new Service(50,"Protection",4);
@@ -110,7 +104,7 @@ public class RentTest {
 
         serviceService.save(serviceDTO);
 
-        ReservationDTO reservationDTO = reservationService.getReservationById(1);
+        ReservationDTO reservationDTO = reservationService.getReservationById(2);
         Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
 
         serviceService.addAdditionalServiceToReservation(reservation.getReservationNumber(),service.getCode());
@@ -118,8 +112,10 @@ public class RentTest {
 
     @Test
     @Commit
+    @Transactional
     public void testAddAdditionalEquipment() throws ParseException {
         testAddAdditionalServices();
+
         Equipment equipment = new Equipment(15,"Turbo",7);
         EquipmentDTO equipmentDTO = EquipmentMapper.INSTANCE.equipmentEntityToDTO(equipment);
 
@@ -129,28 +125,37 @@ public class RentTest {
         Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
 
         equipmentService.addAdditionalEquipmentToReservation(reservation.getReservationNumber(),equipment.getCode());
-
     }
 
     @Test
     @Commit
+    @Transactional
     public void testReturnCar() throws ParseException {
         testAddAdditionalEquipment();
-        boolean isReturn = reservationService.returnCar("12345678");
-        System.out.println(isReturn);
+        ReservationDTO reservationDTO = reservationService.getReservationById(1f);
+        Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
+
+        boolean isReturn = reservationService.returnCar(reservation.getReservationNumber());
+        assertTrue(isReturn);
     }
 
     @Test
     @Commit
+    @Transactional
     public void testDeleteCar() throws ParseException {
         testReturnCar();
-        carService.deleteCar("423");
+        boolean isDeleted = carService.deleteCar("423");
+        assertTrue(isDeleted);
     }
 
     @Test
     @Commit
-    public void testCancelReservation() {
-        boolean isCancelled = reservationService.cancelReservation("12345678");
+    public void testCancelReservation() throws ParseException {
+        ReservationDTO reservationDTO = reservationService.getReservationById(1f);
+        Reservation reservation = ReservationMapper.INSTANCE.reservationDTOToEntity(reservationDTO);
+
+
+        boolean isCancelled = reservationService.cancelReservation(reservation.getReservationNumber());
         assertTrue(isCancelled);
     }
 
