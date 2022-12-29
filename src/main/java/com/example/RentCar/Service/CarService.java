@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CarService {
@@ -110,6 +112,18 @@ public class CarService {
                 Member member = memberRepository.findById(reservation.getMember().getId()).get();
                 dtoList.add(rentedCarMapper.entitiesToDTO(reservation,car,member));
             }
+        }
+
+        for (RentedCarDTO dto : dtoList) {
+            Reservation reservation = reservationRepository.findReservationByReservationNumber(dto.getReservationNumber());
+
+            Date pickUp = reservation.getPickUpDate();
+            Date dropOff = reservation.getDropOffDate();
+
+            long diffInMillies = Math.abs(pickUp.getTime() - dropOff.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            dto.setReservationDayCount((int) diff);
         }
 
         return dtoList;

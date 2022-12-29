@@ -78,6 +78,7 @@ public class RentTest {
 
     @Test
     @Commit
+    @Transactional
     public void testGetAllRentedCar() throws ParseException {
         makeReservation();
         System.out.println("Rented Cars: ");
@@ -90,7 +91,7 @@ public class RentTest {
             System.out.println(dto.getModel());
             System.out.println(dto.getMemberName());
             System.out.println(dto.getTransmissionType());
-            System.out.println(dto.getReservationDayCount()); // this is not working
+            System.out.println(dto.getReservationDayCount());
         }
     }
 
