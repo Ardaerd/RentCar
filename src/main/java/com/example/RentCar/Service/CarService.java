@@ -91,7 +91,7 @@ public class CarService {
     }
 
     public List<CarDTO> findAvailableCars(String carType, String transmissionType) {
-        List<Car> listOfCars = carRepository.findDesiredCars("available",carType,transmissionType);
+        List<Car> listOfCars = carRepository.findDesiredCars("Available",carType,transmissionType);
         List<CarDTO> dtoList = new ArrayList<>();
 
         for (Car car : listOfCars)
