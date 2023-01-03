@@ -1,9 +1,11 @@
 package com.example.RentCar.Controller;
 
+import com.example.RentCar.DTO.CarDTO;
 import com.example.RentCar.DTO.RentedCarDTO;
 import com.example.RentCar.DTO.ReservationDTO;
 import com.example.RentCar.Model.Equipment;
 import com.example.RentCar.Model.Service;
+import com.example.RentCar.Service.CarService;
 import com.example.RentCar.Service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +27,8 @@ public class ReservationController {
 
     @Autowired
     ReservationService reservationService;
+    @Autowired
+    CarService carService;
 
     @GetMapping(value = "/getReservations")
     @Operation(summary = "Find all reservations", description = "getting reservations data from db")
@@ -44,12 +48,14 @@ public class ReservationController {
     @Operation(summary = "Make Reservation", description = "Make reservation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = RentedCarDTO.class))),
-            @ApiResponse(responseCode = "404", description = "No reservation can made") })
+            @ApiResponse(responseCode = "206", description = "Selected Car is not Available") })
     public ResponseEntity<ReservationDTO> makeReservation(@PathVariable("carBarcode") String carBarcodeNum,@PathVariable("dayCount") int dayCount,@PathVariable("memberId") Long memberId,@PathVariable("pickUpCode") int pickUpCode,@PathVariable("dropOffCode") int dropOffCode,@RequestBody List<Equipment> equipments,@RequestBody List<Service> services) throws ParseException {
-        ReservationDTO dto = reservationService.makeReservation(carBarcodeNum, dayCount, memberId, pickUpCode, dropOffCode, equipments, services);
+        CarDTO car = carService.getCarByBarcode(carBarcodeNum);
 
-        if (dto == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (!car.getStatus().equals("Available"))
+            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(null);
+
+        ReservationDTO dto = reservationService.makeReservation(carBarcodeNum, dayCount, memberId, pickUpCode, dropOffCode, equipments, services);
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
@@ -79,7 +85,7 @@ public class ReservationController {
     @Operation(summary = "Cancel Reservation",description = "Updating reservation status as Cancelled")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ReservationDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "404", description = "Reservation Number Not found"),
             @ApiResponse(responseCode = "500", description = "Exception is thrown") })
     public ResponseEntity<Boolean> cancelReservation(@PathVariable("reservationNumber") String reservationNumber) {
 

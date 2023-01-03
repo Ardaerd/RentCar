@@ -30,6 +30,10 @@ public class EquipmentController {
             @ApiResponse(responseCode = "404", description = "There is no equipment") })
     public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
         List<EquipmentDTO> dtoList = equipmentService.getAllEquipmentList();
+
+        if (dtoList == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dtoList);
+
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
@@ -37,11 +41,20 @@ public class EquipmentController {
     @Operation(summary = "Add equipment to the reservation", description = "Add equipment to the reservation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = EquipmentDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "404", description = "Equipment is Not found"),
             @ApiResponse(responseCode = "505", description = "exception thrown")})
     public ResponseEntity<Boolean> addAdditionalServicesToReservation(@PathVariable("reservationNum") String reservationNumber, @PathVariable("equipmentCode") int equipmentCode) {
-        Boolean isAdded = equipmentService.addAdditionalEquipmentToReservation(reservationNumber,equipmentCode);
-        return ResponseEntity.status(HttpStatus.OK).body(isAdded);
+
+        try {
+            Boolean isAdded = equipmentService.addAdditionalEquipmentToReservation(reservationNumber,equipmentCode);
+
+            if (!isAdded)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isAdded);
+
+            return ResponseEntity.status(HttpStatus.OK).body(isAdded);
+        } catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body(null);
+        }
     }
 
 }

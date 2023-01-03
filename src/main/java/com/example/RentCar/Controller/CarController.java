@@ -72,7 +72,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CarDTO.class))),
             @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "406", description = "Not acceptable"),
+            @ApiResponse(responseCode = "406", description = "Car is not Available"),
             @ApiResponse(responseCode = "500", description = "Exception is thrown") })
     public ResponseEntity<Boolean> deleteCar(@PathVariable("carBarcode") String carBarcodeNum) {
 
