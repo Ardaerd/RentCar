@@ -37,10 +37,21 @@ public class ServiceController {
     @Operation(summary = "Add service to the reservation", description = "Add service to the reservation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ServiceDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "404", description = "Equipment is Not found"),
             @ApiResponse(responseCode = "505", description = "exception thrown")})
     public ResponseEntity<Boolean> addAdditionalServicesToReservation(@PathVariable("reservationNum") String reservationNumber, @PathVariable("serviceCode") int serviceCode) {
-        Boolean isAdded = serviceService.addAdditionalServiceToReservation(reservationNumber,serviceCode);
-        return ResponseEntity.status(HttpStatus.OK).body(isAdded);
+
+        try {
+            Boolean isAdded = serviceService.addAdditionalServiceToReservation(reservationNumber,serviceCode);
+
+            if (!isAdded)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isAdded);
+
+            return ResponseEntity.status(HttpStatus.OK).body(isAdded);
+        } catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body(null);
+        }
+
+
     }
 }
