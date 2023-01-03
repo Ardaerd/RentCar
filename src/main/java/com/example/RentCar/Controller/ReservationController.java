@@ -33,6 +33,10 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "There is no reservation") })
     public ResponseEntity<List<ReservationDTO>> getReservations() {
         List<ReservationDTO> dtoList = reservationService.getAllReservations();
+
+        if(dtoList == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dtoList);
+
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
@@ -43,6 +47,10 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "No reservation can made") })
     public ResponseEntity<ReservationDTO> makeReservation(@PathVariable("carBarcode") String carBarcodeNum,@PathVariable("dayCount") int dayCount,@PathVariable("memberId") Long memberId,@PathVariable("pickUpCode") int pickUpCode,@PathVariable("dropOffCode") int dropOffCode,@RequestBody List<Equipment> equipments,@RequestBody List<Service> services) throws ParseException {
         ReservationDTO dto = reservationService.makeReservation(carBarcodeNum, dayCount, memberId, pickUpCode, dropOffCode, equipments, services);
+
+        if (dto == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
@@ -53,8 +61,18 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Not found"),
             @ApiResponse(responseCode = "500", description = "Exception is thrown") })
     public ResponseEntity<Boolean> returnCar(@PathVariable("reservationNumber") String reservationNumber) {
-        Boolean isCarReturned = reservationService.returnCar(reservationNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(isCarReturned);
+        try {
+            Boolean isCarReturned = reservationService.returnCar(reservationNumber);
+
+            if (!isCarReturned)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isCarReturned);
+
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(isCarReturned);
+
+        } catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body(null);
+        }
     }
 
     @PutMapping(value = "/cancelReservation/{reservationNumber}")
@@ -64,8 +82,19 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Not found"),
             @ApiResponse(responseCode = "500", description = "Exception is thrown") })
     public ResponseEntity<Boolean> cancelReservation(@PathVariable("reservationNumber") String reservationNumber) {
-        Boolean isCancelled = reservationService.cancelReservation(reservationNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(isCancelled);
+
+        try {
+            Boolean isCancelled = reservationService.cancelReservation(reservationNumber);
+
+            if (isCancelled)
+                return ResponseEntity.status(HttpStatus.OK).body(isCancelled);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isCancelled);
+
+
+        } catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body(null);
+        }
     }
 
 }
