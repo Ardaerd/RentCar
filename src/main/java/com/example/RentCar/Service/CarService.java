@@ -59,6 +59,13 @@ public class CarService {
 
     }
 
+    public CarDTO getCarByBarcode(String barcode) {
+        Car car = carRepository.findCarByBarcode(barcode);
+        CarDTO dto = carMapper.carEntityToDTO(car);
+
+        return dto;
+    }
+
     @Transactional
     public boolean deleteCar(String carBarcodeNum) {
 

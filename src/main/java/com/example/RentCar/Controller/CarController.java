@@ -31,6 +31,10 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "There is no available car") })
     public ResponseEntity<List<CarDTO>> findAllAvailableCars(@PathVariable("carType") String carType, @PathVariable("transmissionType") String transmissionType) {
         List<CarDTO> dtoList = carService.findAvailableCars(carType,transmissionType);
+
+        if (dtoList == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dtoList);
+
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
@@ -41,6 +45,10 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "There is no car") })
     public ResponseEntity<List<CarDTO>> getAllCars() {
         List<CarDTO> dtoList = carService.getAllCars();
+
+        if (dtoList == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dtoList);
+
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
@@ -51,6 +59,9 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No reserved or rented cars") })
     public ResponseEntity<List<RentedCarDTO>> getAllRentedCars() {
         List<RentedCarDTO> dtoList = carService.getAllRentedCars();
+
+        if (dtoList == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dtoList);
 
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
@@ -64,8 +75,23 @@ public class CarController {
             @ApiResponse(responseCode = "406", description = "Not acceptable"),
             @ApiResponse(responseCode = "500", description = "Exception is thrown") })
     public ResponseEntity<Boolean> deleteCar(@PathVariable("carBarcode") String carBarcodeNum) {
-        Boolean isDeleted = carService.deleteCar(carBarcodeNum);
-        return ResponseEntity.status(HttpStatus.OK).body(isDeleted);
+
+        try {
+
+            Boolean isDeleted = carService.deleteCar(carBarcodeNum);
+            CarDTO car = carService.getCarByBarcode(carBarcodeNum);
+
+            if (!car.getStatus().equals("Available"))
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+
+            if (!isDeleted)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isDeleted);
+
+            return ResponseEntity.status(HttpStatus.OK).body(isDeleted);
+
+        } catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body(null);
+        }
     }
 
 
@@ -76,6 +102,10 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No car is saved") })
     public  ResponseEntity<CarDTO> save(@RequestBody CarDTO dto) {
         CarDTO carDTO = carService.save(dto);
+
+        if (carDTO == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(carDTO);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(carDTO);
     }
