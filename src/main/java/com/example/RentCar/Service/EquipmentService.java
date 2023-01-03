@@ -73,8 +73,6 @@ public class EquipmentService {
 
             List<Equipment> equipmentList = reservation.getEquipments();
 
-            System.out.println("Id: " + equipment.getId());
-
             equipmentList.add(equipment);
             reservation.setEquipments(equipmentList);
 

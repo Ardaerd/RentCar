@@ -78,8 +78,8 @@ public class CarController {
 
         try {
 
-            Boolean isDeleted = carService.deleteCar(carBarcodeNum);
             CarDTO car = carService.getCarByBarcode(carBarcodeNum);
+            Boolean isDeleted = carService.deleteCar(carBarcodeNum);
 
             if (!car.getStatus().equals("Available"))
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
